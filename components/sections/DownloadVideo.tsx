@@ -48,13 +48,13 @@ export default function DownloadVideo() {
     <div className="flex justify-center">
       <Card className="w-[350px]">
         <CardHeader>
-          <CardTitle>Download Video from Walrus</CardTitle>
+          <CardTitle>Download and Verify Video</CardTitle>
           <CardDescription>
-            Video blobId: {blobId}
+            Walrus video blobId: {blobId}
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <p>You can verify your video by downloading:</p>
+          <p>Click below to download video from Walrus:</p>
         </CardContent>
         <CardFooter className="flex justify-between">
           <Button onClick={handleDownload} disabled={isLoading}>
@@ -73,7 +73,7 @@ export default function DownloadVideo() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <p>You can download your video once it's been uploaded to Walrus by clicking below:</p>
+          <p>You can verify your video by downloading it after upload:</p>
         </CardContent>
         <CardFooter className="flex justify-between">
           <Button onClick={handleDownload} disabled={!blobId || isLoading}>

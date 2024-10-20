@@ -27,6 +27,8 @@ export default function RegisterIPA() {
     setTxName,
     addTransaction,
     client,
+    blobId,
+    setBlobId
   } = useStory();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -35,21 +37,28 @@ export default function RegisterIPA() {
   const [mintingFee, setMintingFee] = useState(0);
   const [pilType, setPilType] = useState(PIL_TYPE.COMMERCIAL_USE);
   const [isRegistering, setIsRegistering] = useState(false);
-
-  const [image, setImage] = useState();
   const [nftId, setNftId] = useState("");
   const [nftContractAddress, setNftContractAddress] = useState("");
   const { data: wallet } = useWalletClient();
 
   const mintAndRegisterNFT = async () => {
     if (!client) return;
+    if (!name || !description || !blobId) {
+      alert('Please fill in all the fields and upload the video to Walrus first.');
+      return;
+    }
+
+    const AGGREGATOR = (process.env.VITE_AGGREGATOR_ADDRESS) || 'https://walrus-testnet-aggregator.nodes.guru';
+    const videoURI = `${AGGREGATOR}/v1/${blobId}`
+
+    setIsRegistering(true)
     setTxLoading(true);
     setTxName("Minting an NFT so it can be registered as an IP Asset...");
     const formData = new FormData();
     formData.append("name", name);
-    formData.append("description", description);
+    formData.append("description", `${description}. This NFT represents ownership of the original video represented by the Walrus blobId. BlobID: ${blobId}.`);
     //@ts-ignore
-    formData.append("file", image);
+    formData.append("image", videoURI);
     const { ipfsUri, ipfsJson } = await uploadJSONToIPFS(formData);
 
     const tokenId = await mintNFT(wallet?.account.address as Address, ipfsUri);
@@ -75,6 +84,7 @@ export default function RegisterIPA() {
     const metadataHash = CryptoJS.SHA256(
       JSON.stringify(ipfsJson || {})
     ).toString(CryptoJS.enc.Hex);
+
     const response = await client.ipAsset.register({
       nftContract,
       tokenId,
@@ -110,7 +120,7 @@ export default function RegisterIPA() {
           <CardContent>
             <div className="flex flex-col gap-3">
               <div className="grid w-full max-w-sm items-center gap-1.5">
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="name">NFT Name*</Label>
                 <Input
                   type="text"
                   id="name"
@@ -119,11 +129,11 @@ export default function RegisterIPA() {
                 />
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor="description">Description*</Label>
                 <Input
                   type="text"
                   id="description"
-                  placeholder="e.g. 'Battery fire of Tesla Model 3'"
+                  placeholder="e.g. 'Tesla Model 3 battery fire in SF'"
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </div>
@@ -133,6 +143,7 @@ export default function RegisterIPA() {
                   type="text"
                   id="tag"
                   placeholder="e.g. 'tesla'"
+                  value={tag ? tag : ''}
                   onChange={(e) => setTag(e.target.value)}
                 />
               </div>
@@ -142,38 +153,55 @@ export default function RegisterIPA() {
                   Percentage of revenue you want back
                 </CardDescription>
                 <Input
-                  type="text"
+                  type="number"
+                  min="0"
+                  max="100"
                   id="revShare"
                   placeholder="e.g. '50'"
-                  onChange={(e) => setRevShare(e.target.value)}
+                  value={revShare}
+                  onChange={(e) => {
+                    const value = Number(e.target.value);
+                    if (value >= 0 && value <= 100) {
+                      setRevShare(value);
+                    }
+                  }} 
                 />
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="mintingFee">Minting Fee</Label>
                 <CardDescription>
-                  Flat fee you want each time your video is licensed
+                  Flat fee in USDC you want each time your video is licensed (max. 1,000,000)
                 </CardDescription>
                 <Input
-                  type="text"
-                  id="Tag"
+                  type="number"
+                  id="mintingFee"
                   placeholder="e.g. '2'"
-                  onChange={(e) => setTag(e.target.value)}
+                  value={mintingFee}
+                  onChange={(e) => {
+                    const value = Number(e.target.value);
+                    if (value >= 0 && value <= 1_000_000) {
+                      setMintingFee(value);
+                    }
+                  }} 
                 />
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">
-                <Label htmlFor="image">Image</Label>
+                <Label htmlFor="videoBlobID">Video Walrus Blob ID*</Label>
                 <Input
-                  type="file"
-                  id="image"
+                  type="text"
+                  id="videoBlobID"
+                  value={blobId ? blobId : ''}
+                  placeholder="upload video to fill or enter custom blobid"
                   // @ts-ignore
-                  onChange={(e) => setImage(e.target.files[0])}
+                  onChange={(e) => setBlobId(e.target.value)}
                 />
               </div>
             </div>
           </CardContent>
           <CardFooter className="flex gap-3">
-            <Button onClick={mintAndRegisterNFT}>Register</Button>
-            <ViewCode type="register-new-nft" />
+            <Button onClick={mintAndRegisterNFT} disabled={isRegistering || !blobId}>
+              {isRegistering ? 'Registering...' : 'Register NFT and IP'}
+            </Button>
           </CardFooter>
         </Card>
       </div>
