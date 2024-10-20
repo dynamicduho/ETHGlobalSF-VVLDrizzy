@@ -15,6 +15,9 @@ interface AppContextType {
   blobId: string | null;
   ipa: Address | null;
   file: File | null;
+  nftTokenId: string | null;
+  requestIpa: string | null;
+  isPaid: boolean;
   setTxLoading: (loading: boolean) => void;
   setTxHash: (txHash: string) => void;
   setTxName: (txName: string) => void;
@@ -23,6 +26,9 @@ interface AppContextType {
   setBlobId: (blobId: string) => void;
   setFile: (file: File | null) => void;
   setIpa: (ipa: Address) => void;
+  setNftTokenId: (tokenId: string) => void;
+  setRequestIpa: (ipa: string) => void;
+  setIsPaid: (isPaid: boolean) => void;
 }
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -47,6 +53,9 @@ export default function AppProvider({ children }: PropsWithChildren) {
   const [blobId, setBlobId] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [ipa, setIpa] = useState<Address | null>(null);
+  const [nftTokenId, setNftTokenId] = useState<string | null>(null);
+  const [requestIpa, setRequestIpa] = useState<string | null>(null);
+  const [isPaid, setIsPaid] = useState(false);
 
   const setupStoryClient: () => StoryClient = () => {
     const config: StoryConfig = {
@@ -116,7 +125,13 @@ export default function AppProvider({ children }: PropsWithChildren) {
         file,
         setFile,
         ipa,
-        setIpa
+        setIpa,
+        nftTokenId,
+        setNftTokenId,
+        requestIpa,
+        setRequestIpa,
+        isPaid,
+        setIsPaid
       }}
     >
       {children}

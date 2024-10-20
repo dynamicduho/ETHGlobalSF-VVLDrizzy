@@ -11,15 +11,16 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useStory } from "@/lib/context/AppContext";
 
-export default function DownloadVideo() {
-  const {blobId} = useStory();
+export default function MediaDownload() {
+  const {requestIpa, isPaid} = useStory();
+  const [requestBlobId, setRequestBlobId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const AGGREGATOR = process.env.WALRUS_AGGREGATOR_ADDRESS || 'https://walrus-testnet-aggregator.nodes.guru';
-
+  
   const handleDownload = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${AGGREGATOR}/v1/${blobId}`);
+      const response = await fetch(`${AGGREGATOR}/v1/${requestBlobId}`);
       if (!response.ok) {
         throw new Error(`Error fetching video: ${response.status}`);
       }
@@ -30,7 +31,7 @@ export default function DownloadVideo() {
       // Temporary anchor tag for downloading
       const a = document.createElement('a');
       a.href = url;
-      a.download = `${blobId}.mp4`;
+      a.download = `${requestBlobId}.mp4`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -44,39 +45,31 @@ export default function DownloadVideo() {
   };
 
   return (
-    blobId ? 
     <div className="flex justify-center">
-      <Card className="w-[350px]">
-        <CardHeader>
-          <CardTitle>Download and Verify Video</CardTitle>
-          <CardDescription>
-            Walrus video blobId: {blobId}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p>Click below to download video from Walrus:</p>
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button onClick={handleDownload} disabled={isLoading}>
-            {isLoading ? "Downloading..." : "Download Video"}
-          </Button>
-        </CardFooter>
-      </Card>
-    </div>
-    :
-    <div className="flex justify-center">
-      <Card className="w-[350px]">
+      <Card className="w-[400px]">
         <CardHeader>
           <CardTitle>Download Video</CardTitle>
           <CardDescription>
-            Please upload a video first.
+            Download a non-watermarked version of the video. Strict licensing terms apply as listed above. Find the Blob ID in the licensing terms.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <p>You can verify your video was uploaded to the Walrus network by downloading it after uploading a file:</p>
+          <div className="mb-4">
+            <label htmlFor="requestBlobId" className="block text-sm font-medium">
+              Walrus Blob ID:
+            </label>
+            <input
+              type="text"
+              id="requestBlobId"
+              value={requestBlobId || ''}
+              onChange={(e) => setRequestBlobId(e.target.value)}
+              className="block w-full p-2 mt-1 border rounded-md"
+              placeholder="Enter the Blob ID"
+            />
+          </div>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <Button onClick={handleDownload} disabled={!blobId || isLoading}>
+          <Button onClick={handleDownload} disabled={ !isPaid || !requestBlobId || isLoading}>
             {isLoading ? "Downloading..." : "Download Video"}
           </Button>
         </CardFooter>

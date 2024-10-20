@@ -15,7 +15,7 @@ import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
 
 export default function DownloadWatermarkedVideo() {
   const { file, ipa, setIpa} = useStory();
-  setIpa("0xEd5Cb0aC96c768af58c29119Aad2E4ec6A40dA4C"); // for debugging
+//   setIpa("0xEd5Cb0aC96c768af58c29119Aad2E4ec6A40dA4C"); // for debugging
   const [isProcessing, setIsProcessing] = useState(false);
   const [outputFile, setOutputFile] = useState<string | null>(null);
   const ffmpeg = createFFmpeg({ log: true });
@@ -78,7 +78,7 @@ export default function DownloadWatermarkedVideo() {
         <CardHeader>
           <CardTitle>Download Watermarked Video</CardTitle>
           <CardDescription>
-            Watermark video with Story logo and IPA, then download it.
+            Watermark video with Story logo and IPA, then download it for uploading to social media.
           </CardDescription>
         </CardHeader>
         <CardContent>

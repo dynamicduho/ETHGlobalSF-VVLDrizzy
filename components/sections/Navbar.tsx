@@ -17,12 +17,6 @@ export default function Navbar() {
             target="_blank"
             className="hidden sm:block"
           >
-            <div className="flex items-center gap-2 rounded-full border border-dashed border-zinc-300 py-px pr-3 text-xs/6 font-medium text-zinc-900 dark:border-white/20 dark:text-white">
-              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-zinc-100 ring-1 ring-zinc-200 dark:bg-zinc-800 dark:ring-white/25">
-                v1.1
-              </div>
-              SDK Version
-            </div>
           </a>
           <a
             href="https://docs.story.foundation/v1/docs/sdk-overview"
@@ -40,16 +34,6 @@ export default function Navbar() {
             href="https://github.com/jacob-tucker/story-developer-sandbox"
             target="_blank"
           >
-            <div className="flex h-5 w-5 items-center justify-center rounded-full bg-zinc-100 ring-1 ring-zinc-200 dark:bg-zinc-800 dark:ring-white/25">
-              <Icon icon="tabler:brand-github" />
-            </div>
-          </a>
-          <a
-            className="text-sm/6 font-medium text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white"
-            href="https://docs.story.foundation/v1/docs/what-is-story-protocol"
-            target="_blank"
-          >
-            Docs
           </a>
           <ConnectButton />
         </div>

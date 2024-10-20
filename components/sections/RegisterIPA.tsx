@@ -31,7 +31,8 @@ export default function RegisterIPA() {
     blobId,
     setBlobId,
     ipa,
-    setIpa
+    setIpa,
+    setNftTokenId
   } = useStory();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -62,9 +63,11 @@ export default function RegisterIPA() {
     formData.append("description", `${description}. This NFT represents ownership of the original video represented by the Walrus blobId. BlobID: ${blobId}.`);
     //@ts-ignore
     formData.append("image", videoURI);
+    formData.append("blobId", blobId);
     const { ipfsUri, ipfsJson } = await uploadJSONToIPFS(formData);
 
     const tokenId = await mintNFT(wallet?.account.address as Address, ipfsUri);
+    setNftTokenId(tokenId);
     registerExistingNFT(
       tokenId,
       "0xd2a4a4Cb40357773b658BECc66A6c165FD9Fc485",
@@ -88,7 +91,7 @@ export default function RegisterIPA() {
       JSON.stringify(ipfsJson || {})
     ).toString(CryptoJS.enc.Hex);
 
-    const revShareValue = Math.ceil(revShare )
+    const revShareValue = revShare
     console.log("Rev share: ", revShare, "Rev share value is :", revShareValue)
     const response = await client.ipAsset.registerIpAndAttachPilTerms({
       nftContract,

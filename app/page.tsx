@@ -21,6 +21,10 @@ import { useWalletClient } from "wagmi";
 import UploadVideo from "@/components/sections/UploadVideo";
 import DownloadVideo from "@/components/sections/DownloadVideo";
 import DownloadWatermarkedVideo from "@/components/sections/DownloadWatermarkedVideo";
+import Summary from "@/components/sections/Summary";
+import MediaRequestTerms from "@/components/sections/MediaRequestLicense";
+import MediaDownload from "@/components/sections/MediaDownload";
+import MediaPayLicense from "@/components/sections/MediaPayLicense";
 
 export default function Home() {
   const { txLoading, txHash, txName, blobId } = useStory();
@@ -101,8 +105,23 @@ export default function Home() {
       <RegisterIPA />
       <VerticalLine />
       <DownloadWatermarkedVideo/>
-      {/* <AttachTerms />
       <VerticalLine />
+      <Summary/>
+      <br/>
+      <hr/>
+      <br/>
+      <h1 className="text-center text-3xl font-bold leading-tight tracking-tighter md:text-6xl lg:leading-[1.1]">
+        Media Center
+      </h1>
+      <br/>
+      <MediaRequestTerms/>
+      <VerticalLine />
+      <MediaPayLicense/>
+      <VerticalLine />
+      <MediaDownload/>
+      <br/>
+      {/* <AttachTerms /> */}
+      {/* <VerticalLine />
       <MintLicense />
       <VerticalLine />
       <RegisterDerivativeIPA />
@@ -112,7 +131,7 @@ export default function Home() {
       <Snapshot />
       <VerticalLine />
       <ClaimRevenue /> */}
-      <Footer />
+      {/* <Footer /> */}
     </main>
   );
 }
