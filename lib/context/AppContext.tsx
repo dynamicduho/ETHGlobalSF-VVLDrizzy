@@ -13,6 +13,7 @@ interface AppContextType {
   transactions: { txHash: string; action: string; data: any }[];
   client: StoryClient | null;
   blobId: string | null;
+  ipa: string | null;
   file: File | null;
   setTxLoading: (loading: boolean) => void;
   setTxHash: (txHash: string) => void;
@@ -21,6 +22,7 @@ interface AppContextType {
   addTransaction: (txHash: string, action: string, data: any) => void;
   setBlobId: (blobId: string) => void;
   setFile: (file: File | null) => void;
+  setIpa: (ipa: string) => void;
 }
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -44,6 +46,7 @@ export default function AppProvider({ children }: PropsWithChildren) {
   const [client, setClient] = useState<StoryClient | null>(null);
   const [blobId, setBlobId] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
+  const [ipa, setIpa] = useState<string | null>(null);
 
   const setupStoryClient: () => StoryClient = () => {
     const config: StoryConfig = {
@@ -112,6 +115,8 @@ export default function AppProvider({ children }: PropsWithChildren) {
         setBlobId,
         file,
         setFile,
+        ipa,
+        setIpa
       }}
     >
       {children}

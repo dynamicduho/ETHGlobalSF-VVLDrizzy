@@ -100,6 +100,7 @@ export default function Home() {
       <VerticalLine />
       <RegisterIPA />
       <VerticalLine />
+      {/* <DownloadWatermarkedVideo/> */}
       <AttachTerms />
       <VerticalLine />
       <MintLicense />

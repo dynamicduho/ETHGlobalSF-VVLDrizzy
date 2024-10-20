@@ -18,6 +18,7 @@ import { useWalletClient } from "wagmi";
 import CryptoJS from "crypto-js";
 import { useStory } from "@/lib/context/AppContext";
 import { PIL_TYPE } from "@story-protocol/core-sdk";
+import {revSharePercentToValue, CurrencyAddress} from "@/lib/utils"
 
 export default function RegisterIPA() {
   const {
@@ -35,7 +36,7 @@ export default function RegisterIPA() {
   const [tag, setTag] = useState("");
   const [revShare, setRevShare] = useState(50);
   const [mintingFee, setMintingFee] = useState(0);
-  const [pilType, setPilType] = useState(PIL_TYPE.COMMERCIAL_USE);
+  const [pilType, setPilType] = useState(PIL_TYPE.COMMERCIAL_REMIX);
   const [isRegistering, setIsRegistering] = useState(false);
   const [nftId, setNftId] = useState("");
   const [nftContractAddress, setNftContractAddress] = useState("");
@@ -85,9 +86,15 @@ export default function RegisterIPA() {
       JSON.stringify(ipfsJson || {})
     ).toString(CryptoJS.enc.Hex);
 
-    const response = await client.ipAsset.register({
+    const revShareValue = Math.ceil(revShare )
+    console.log("Rev share: ", revShare, "Rev share value is :", revShareValue)
+    const response = await client.ipAsset.registerIpAndAttachPilTerms({
       nftContract,
+      commercialRevShare: revShareValue,
       tokenId,
+      pilType: pilType,
+      mintingFee: mintingFee, // user defined minting fee
+      currency: CurrencyAddress, // default Story USD; expand later
       ipMetadata: {
         ipMetadataURI: ipfsUri || "test-ip-metadata-uri", // uri of IP metadata
         ipMetadataHash: `0x${metadataHash}`, // hash of IP metadata
