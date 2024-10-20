@@ -29,7 +29,9 @@ export default function RegisterIPA() {
     addTransaction,
     client,
     blobId,
-    setBlobId
+    setBlobId,
+    ipa,
+    setIpa
   } = useStory();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -108,9 +110,15 @@ export default function RegisterIPA() {
     );
     setTxLoading(false);
     setTxHash(response.txHash as string);
+    if (!response.ipId) {
+      console.error("fatal error; no IPA was returned")
+      return;
+    }
+    setIpa(response.ipId);
     addTransaction(response.txHash as string, "Register IPA", {
       ipId: response.ipId,
     });
+
   };
 
   return (

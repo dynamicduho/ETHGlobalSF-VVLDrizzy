@@ -20,7 +20,7 @@ import { useEffect } from "react";
 import { useWalletClient } from "wagmi";
 import UploadVideo from "@/components/sections/UploadVideo";
 import DownloadVideo from "@/components/sections/DownloadVideo";
-import RegisterIPDiv from "@/components/sections/RegisterNFTandIP";
+import DownloadWatermarkedVideo from "@/components/sections/DownloadWatermarkedVideo";
 
 export default function Home() {
   const { txLoading, txHash, txName, blobId } = useStory();
@@ -100,8 +100,8 @@ export default function Home() {
       <VerticalLine />
       <RegisterIPA />
       <VerticalLine />
-      {/* <DownloadWatermarkedVideo/> */}
-      <AttachTerms />
+      <DownloadWatermarkedVideo/>
+      {/* <AttachTerms />
       <VerticalLine />
       <MintLicense />
       <VerticalLine />
@@ -111,7 +111,7 @@ export default function Home() {
       <VerticalLine />
       <Snapshot />
       <VerticalLine />
-      <ClaimRevenue />
+      <ClaimRevenue /> */}
       <Footer />
     </main>
   );
