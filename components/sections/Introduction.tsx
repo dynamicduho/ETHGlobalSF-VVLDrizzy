@@ -9,8 +9,10 @@ export default function Introduction() {
       data-step="1"
     >
       {/* <OutdatedAlert /> */}
+      <img src="/vvldrizzy-dalle.jpg" alt="VVLDrizzy Logo" width={250} height={250} className="rounded-full"/>
+      <br/>
       <h1 className="text-center text-3xl font-bold leading-tight tracking-tighter md:text-6xl lg:leading-[1.1]">
-        Developer Sandbox
+        VVLDrizzy
       </h1>
       <span
         className="max-w-[750px] text-center text-lg text-muted-foreground sm:text-xl"
@@ -23,8 +25,11 @@ export default function Introduction() {
           maxWidth: "570px",
         }}
       >
-        Learn the React SDK by playing around with the most common actions.
+        the Viral Video Licensor (VVL)
+        <br/>
+        <br/>
       </span>
+      <h2 className="text-center text-3xl font-bold leading-tight tracking-tighter md:text-3xl lg:leading-[1.1]">Protect your viral videos - and get paid</h2>
     </section>
   );
 }

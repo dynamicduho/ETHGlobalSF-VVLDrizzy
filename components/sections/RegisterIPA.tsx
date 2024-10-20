@@ -17,6 +17,7 @@ import { uploadJSONToIPFS } from "@/lib/functions/uploadJSONToIpfs";
 import { useWalletClient } from "wagmi";
 import CryptoJS from "crypto-js";
 import { useStory } from "@/lib/context/AppContext";
+import { PIL_TYPE } from "@story-protocol/core-sdk";
 
 export default function RegisterIPA() {
   const {
@@ -29,6 +30,12 @@ export default function RegisterIPA() {
   } = useStory();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [tag, setTag] = useState("");
+  const [revShare, setRevShare] = useState(50);
+  const [mintingFee, setMintingFee] = useState(0);
+  const [pilType, setPilType] = useState(PIL_TYPE.COMMERCIAL_USE);
+  const [isRegistering, setIsRegistering] = useState(false);
+
   const [image, setImage] = useState();
   const [nftId, setNftId] = useState("");
   const [nftContractAddress, setNftContractAddress] = useState("");
@@ -92,69 +99,11 @@ export default function RegisterIPA() {
   return (
     <div>
       <div className="flex md:flex-row gap-3 justify-center items-center flex-col">
-        <Card
-          className="w-[350px]"
-          data-title="Step-by-Step"
-          data-intro="Each step shows you how to interact with your IP."
-          data-step="2"
-          data-position="left"
-        >
-          <CardHeader>
-            <CardTitle>Step 1a. Register existing NFT</CardTitle>
-            <CardDescription>
-              Register an existing NFT in your wallet as an IP Asset.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-col gap-3">
-              <div className="grid w-full max-w-sm items-center gap-1.5">
-                <Label htmlFor="nftId">NFT ID</Label>
-                <Input
-                  type="text"
-                  id="nftId"
-                  placeholder="12"
-                  onChange={(e) => setNftId(e.target.value)}
-                />
-              </div>
-              <div className="grid w-full max-w-sm items-center gap-1.5">
-                <Label htmlFor="nftContractAddress">NFT Contract Address</Label>
-                <Input
-                  type="text"
-                  id="nftContractAddress"
-                  placeholder="0xe8E8dd120b067ba86cf82B711cC4Ca9F22C89EDc"
-                  onChange={(e) => setNftContractAddress(e.target.value)}
-                />
-              </div>
-            </div>
-          </CardContent>
-          <CardFooter className="flex gap-3">
-            <Button
-              onClick={() =>
-                registerExistingNFT(
-                  nftId,
-                  nftContractAddress as Address,
-                  null,
-                  null
-                )
-              }
-            >
-              Register
-            </Button>
-            <div
-              data-title="View Code"
-              data-intro="You can view the code associated with each step."
-              data-step="3"
-            >
-              <ViewCode type="register-existing-nft" />
-            </div>
-          </CardFooter>
-        </Card>
-        <h3>OR</h3>
         <Card className="w-[350px]">
           <CardHeader>
-            <CardTitle>Step 1b. Mint & register new IP</CardTitle>
+            <CardTitle>Mint & register new IP</CardTitle>
             <CardDescription>
-              Mint a new NFT to represent your IP and register it as an IP
+              Mint a new NFT to represent your video's IP and register it as an IP
               Asset.
             </CardDescription>
           </CardHeader>
@@ -165,7 +114,7 @@ export default function RegisterIPA() {
                 <Input
                   type="text"
                   id="name"
-                  placeholder="Doge"
+                  placeholder="e.g. 'Tesla on Fire'"
                   onChange={(e) => setName(e.target.value)}
                 />
               </div>
@@ -174,8 +123,41 @@ export default function RegisterIPA() {
                 <Input
                   type="text"
                   id="description"
-                  placeholder="doge wif hat"
+                  placeholder="e.g. 'Battery fire of Tesla Model 3'"
                   onChange={(e) => setDescription(e.target.value)}
+                />
+              </div>
+              <div className="grid w-full max-w-sm items-center gap-1.5">
+                <Label htmlFor="tag">Tag</Label>
+                <Input
+                  type="text"
+                  id="tag"
+                  placeholder="e.g. 'tesla'"
+                  onChange={(e) => setTag(e.target.value)}
+                />
+              </div>
+              <div className="grid w-full max-w-sm items-center gap-1.5">
+                <Label htmlFor="revShare">Revenue Share %</Label>
+                <CardDescription>
+                  Percentage of revenue you want back
+                </CardDescription>
+                <Input
+                  type="text"
+                  id="revShare"
+                  placeholder="e.g. '50'"
+                  onChange={(e) => setRevShare(e.target.value)}
+                />
+              </div>
+              <div className="grid w-full max-w-sm items-center gap-1.5">
+                <Label htmlFor="mintingFee">Minting Fee</Label>
+                <CardDescription>
+                  Flat fee you want each time your video is licensed
+                </CardDescription>
+                <Input
+                  type="text"
+                  id="Tag"
+                  placeholder="e.g. '2'"
+                  onChange={(e) => setTag(e.target.value)}
                 />
               </div>
               <div className="grid w-full max-w-sm items-center gap-1.5">

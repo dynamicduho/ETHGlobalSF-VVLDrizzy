@@ -18,9 +18,12 @@ import ClaimRevenue from "@/components/sections/ClaimRevenue";
 import introJs from "intro.js";
 import { useEffect } from "react";
 import { useWalletClient } from "wagmi";
+import UploadVideo from "@/components/sections/UploadVideo";
+import DownloadVideo from "@/components/sections/DownloadVideo";
+import RegisterIPDiv from "@/components/sections/RegisterNFTandIP";
 
 export default function Home() {
-  const { txLoading, txHash, txName } = useStory();
+  const { txLoading, txHash, txName, blobId } = useStory();
   const { data: wallet } = useWalletClient();
 
   useEffect(() => {
@@ -90,6 +93,11 @@ export default function Home() {
         <ConsoleLog />
       </div>
       <Introduction />
+      <UploadVideo />
+      <VerticalLine />
+      <DownloadVideo/>
+      {/* <RegisterIPDiv/> */}
+      <VerticalLine />
       <RegisterIPA />
       <VerticalLine />
       <AttachTerms />

@@ -12,11 +12,15 @@ interface AppContextType {
   txName: string;
   transactions: { txHash: string; action: string; data: any }[];
   client: StoryClient | null;
+  blobId: string | null;
+  file: File | null;
   setTxLoading: (loading: boolean) => void;
   setTxHash: (txHash: string) => void;
   setTxName: (txName: string) => void;
   mintNFT: (to: Address, uri: string) => Promise<string>;
   addTransaction: (txHash: string, action: string, data: any) => void;
+  setBlobId: (blobId: string) => void;
+  setFile: (file: File | null) => void;
 }
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -38,6 +42,8 @@ export default function AppProvider({ children }: PropsWithChildren) {
   >([]);
   const { data: wallet } = useWalletClient();
   const [client, setClient] = useState<StoryClient | null>(null);
+  const [blobId, setBlobId] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
 
   const setupStoryClient: () => StoryClient = () => {
     const config: StoryConfig = {
@@ -102,6 +108,10 @@ export default function AppProvider({ children }: PropsWithChildren) {
         mintNFT,
         addTransaction,
         client,
+        blobId,
+        setBlobId,
+        file,
+        setFile,
       }}
     >
       {children}
